@@ -22,7 +22,8 @@
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/yourusername/popoutsmart.git
+   git clone https://github.com/iahmedgamal/PopOutSmart
+ 
    cd popoutsmart
    ```
 
@@ -38,7 +39,7 @@
    npm run dev
    ```
 
-4. **Open your browser** and go to `http://localhost:3000` to view the app.
+4. **Open your browser** and go to `http://localhost:5173` to view the app.
 
 ## Contributing
 
