@@ -1,6 +1,6 @@
 import React from "react";
-import { FaUmbrella, FaRegSun, FaWind, FaRegSnowflake } from "react-icons/fa";
-import { GiCircleCage } from "react-icons/gi"; // For the AlertCircle icon
+import { FaUmbrella, FaRegSun, FaWind,  } from "react-icons/fa";
+import { GiCircleCage } from "react-icons/gi"; 
 import { WeatherInfo } from "../query/api";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
