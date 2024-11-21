@@ -1,5 +1,6 @@
 import React from "react";
-import { AlertCircle, Umbrella, Sun, Wind } from "lucide-react";
+import { FaUmbrella, FaRegSun, FaWind, FaRegSnowflake } from "react-icons/fa";
+import { GiCircleCage } from "react-icons/gi"; // For the AlertCircle icon
 import { WeatherInfo } from "../query/api";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
@@ -154,8 +155,8 @@ const WeatherClothingAdvisor: React.FC<WeatherClothingAdvisorProps> = ({
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
-            <span>Today's Outfit Recommendations</span>
-            <span className="text-2xl">{Math.round(data.main.temp)}°C</span>
+            <div>Today's Outfit Recommendations</div>
+            <div className="text-2xl">{Math.round(data.main.temp)}°C</div>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -168,7 +169,7 @@ const WeatherClothingAdvisor: React.FC<WeatherClothingAdvisorProps> = ({
 
           {recommendations.umbrella && (
             <WeatherAlert
-              icon={<Umbrella className="h-4 w-4" />}
+              icon={<FaUmbrella className="h-4 w-4" />}
               title="Bring an umbrella!"
               description="Rain is expected today."
             />
@@ -176,7 +177,7 @@ const WeatherClothingAdvisor: React.FC<WeatherClothingAdvisorProps> = ({
 
           {recommendations.alert && (
             <WeatherAlert
-              icon={<AlertCircle className="h-4 w-4" />}
+              icon={<GiCircleCage className="h-4 w-4" />}
               title="Weather Alert"
               description={recommendations.alert}
             />
@@ -184,7 +185,7 @@ const WeatherClothingAdvisor: React.FC<WeatherClothingAdvisorProps> = ({
 
           {data.wind.speed > 5.5 && (
             <WeatherAlert
-              icon={<Wind className="h-4 w-4" />}
+              icon={<FaWind className="h-4 w-4" />}
               title="Windy Conditions"
               description="Consider wearing wind-resistant clothing today."
             />
@@ -193,7 +194,7 @@ const WeatherClothingAdvisor: React.FC<WeatherClothingAdvisorProps> = ({
           {data.weather[0].description.includes("clear") &&
             data.main.temp > 20 && (
               <WeatherAlert
-                icon={<Sun className="h-4 w-4" />}
+                icon={<FaRegSun className="h-4 w-4" />}
                 title="Sun Protection Needed"
                 description="Don't forget sunscreen and sunglasses!"
               />
