@@ -74,13 +74,13 @@ const WeatherClothingAdvisor = ({ data }: { data: WeatherInfo }) => {
       
       <div className="space-y-4 mt-4">
         <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-semibold mb-2">Recommended Outfit</h3>
+          <h3 className="font-semibold mb-2 text-gray-700 ">Recommended Outfit</h3>
           <p className="text-gray-700">{outfit}</p>
         </div>
         
         {extras.length > 0 && (
           <div className="bg-gray-50 p-4 rounded-lg">
-            <h3 className="font-semibold mb-2">Don't Forget</h3>
+            <h3 className="font-semibold mb-2 text-gray-600">Don't Forget</h3>
             <ul className="list-disc list-inside text-gray-700">
               {extras.map((item, i) => (
                 <li key={i}>{item}</li>
