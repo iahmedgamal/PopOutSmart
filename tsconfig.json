@@ -1,7 +1,13 @@
+
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+
+    "compilerOptions": {
+  
+      "jsx": "react",
+      "lib": ["es2015", "dom"],
+
+      "esModuleInterop": true
+  
+    }
+
 }
