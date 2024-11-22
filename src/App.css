@@ -3,19 +3,16 @@
 @tailwind utilities;
 
 #root {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0.3rem;
   text-align: center;
 }
+
+
 
 body {
   font-family: 'Roboto', sans-serif;
   background-color: #282828;
-}
-
-
-body {
   margin: 0;
   display: flex;
   place-items: center;

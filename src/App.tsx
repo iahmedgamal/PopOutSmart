@@ -19,8 +19,8 @@ function App() {
   console.log(data);
 
   return (
-    <div className="p-3 m-3">
-      <h2 className="text-2xl font-semibold mb-2">
+    <div className="p-1 m-1">
+      <h2 className="text-2xl font-semibold mb-2">  
         {data.name}, {data.sys.country}
       </h2>
 
