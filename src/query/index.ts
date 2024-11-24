@@ -5,16 +5,16 @@ import { useWeatherStore } from "../store/weather";
 // Create a client
 export const queryClient = new QueryClient();
 
-export function useWeatherOverViewQuery() {
+export function useWeatherOverViewQuery(cityName: string) {
+  console.log("useWeatherOverViewQuery", cityName);
   const setWeather = useWeatherStore((state) => state.setWeather);
 
   return useQuery({
-    queryKey: ["weather"],
-    queryFn: getWeatherOverView,
+    queryKey: ["weather", cityName],
+    queryFn: () => getWeatherOverView(cityName),
     select: (data: WeatherInfo) => {
       setWeather(data);
       return data;
     },
- 
   });
 }
