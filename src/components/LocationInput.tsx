@@ -44,21 +44,23 @@ function LocationInput({ onSelect }: LocationInputProps) {
                     fetchSuggestions(value); // Fetch autocomplete suggestions
                 }}
             />
-            <div className="absolute bg-white border rounded w-full z-10">
-                {suggestions.map((suggestion: any, index: number) => (
-                    <div
-                        key={index}
-                        className="p-2 text-blue-300 hover:bg-gray-200 cursor-pointer"
-                        onClick={() =>
-                            handleCitySelect(
-                                `${suggestion.name}, ${suggestion.country}`
-                            )
-                        }
-                    >
-                        {suggestion.name}, {suggestion.country}
-                    </div>
-                ))}
-            </div>
+            {suggestions.length > 0 && (
+                <div className="absolute border bg-white rounded w-full z-10">
+                    {suggestions.map((suggestion: any, index: number) => (
+                        <div
+                            key={index}
+                            className="p-2 text-blue-300 hover:bg-gray-200 cursor-pointer"
+                            onClick={() =>
+                                handleCitySelect(
+                                    `${suggestion.name}, ${suggestion.country}`
+                                )
+                            }
+                        >
+                            {suggestion.name}, {suggestion.country}
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     )
 }
