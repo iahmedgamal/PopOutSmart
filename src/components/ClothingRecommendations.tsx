@@ -1,6 +1,5 @@
 import React from 'react';
 
-// Simplified types
 interface WeatherInfo {
   main: {
     temp: number;
@@ -68,8 +67,11 @@ const WeatherClothingAdvisor = ({ data }: { data: WeatherInfo }) => {
         </div>
       </div>
       
-      <div className="text-sm text-gray-600">
-        {data.weather[0].description} • Feels like {Math.round(data.main.feels_like)}°C
+      <div className="text-sm text-gray-600 flex items-center space-x-2">
+        <span className="capitalize">{data.weather[0].description}</span>
+        <span className="text-lg font-bold text-blue-600">
+          • Feels like {Math.round(data.main.feels_like)}°C
+        </span>
       </div>
       
       <div className="space-y-4 mt-4">
@@ -81,9 +83,11 @@ const WeatherClothingAdvisor = ({ data }: { data: WeatherInfo }) => {
         {extras.length > 0 && (
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="font-semibold mb-2 text-gray-600">Don't Forget</h3>
-            <ul className="list-disc list-inside text-gray-700">
+            <ul className="list-none text-gray-700 space-y-1">
               {extras.map((item, i) => (
-                <li key={i}>{item}</li>
+          <li key={i} className="flex items-center">
+            {item}
+          </li>
               ))}
             </ul>
           </div>

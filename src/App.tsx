@@ -28,12 +28,12 @@ function App() {
       <div className="flex items-center justify-between  m-3">
         <div className="flex items-center text-red-400">
           <FaTemperatureArrowUp className="text-2xl mr-1" /> max
-          <span>({data.main.temp_max}°C)</span>
+          <span>({Math.round(data.main.temp_max)}°C)</span>
         </div>
     
         <div className="flex items-center text-blue-300">
           <FaTemperatureArrowDown className="text-2xl mr-1" /> low
-          <span> ({data.main.temp_min}°C) </span>
+          <span> ({Math.round(data.main.temp_min)}°C) </span>
         </div>
         <div className="flex items-center text-green-600 text-2xl">
         
