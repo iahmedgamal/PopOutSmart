@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useWeatherOverViewQuery } from "./query";
+import { getSavedCityName, useWeatherOverViewQuery } from "./query";
 import "./App.css";
 import Degrees from "./components/Degrees";
 import WeatherClothingAdvisor from "./components/ClothingRecommendations";
@@ -7,10 +7,18 @@ import LocationInput from "./components/LocationInput";
 import Country from "./components/Country";
 
 function App() {
-  const [cityName, setCityName] = useState<string | null>("sofia");
+  
+  
+  const [cityName, setCityName] = useState<string | null>(localStorage.getItem("cityName"));
   const [fetchCityName, setFetchCityName] = useState<string | null>(cityName);
   const { isFetching, data } = useWeatherOverViewQuery(fetchCityName);
 
+  useEffect(() => {
+    const savedCityName = getSavedCityName();
+    if (savedCityName) {
+      setCityName(savedCityName);
+    }
+  }, []);
   const handleCitySelect = (selectedCityName: string) => {
 
     setCityName(selectedCityName);
@@ -20,7 +28,7 @@ function App() {
     setFetchCityName(cityName);
   }, [cityName]);
 
-  if (isFetching || !data) {
+  if (isFetching || (!data && cityName && cityName !="")) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p className="text-lg">Loading weather data...</p>

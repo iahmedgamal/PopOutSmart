@@ -3,10 +3,11 @@ import React, { useState } from 'react'
 interface LocationInputProps {
     onSelect: (value: string) => void;
 }
-function LocationInput({onSelect}:LocationInputProps) {
+
+function LocationInput({ onSelect }: LocationInputProps) {
     const [query, setQuery] = useState(""); // Track user input
     const [suggestions, setSuggestions] = useState([]); // Track autocomplete suggestions
-    const [selectedCity, setSelectedCity] = useState("sofia"); // Default city
+    const [selectedCity, setSelectedCity] = useState(""); // Default city
 
     // Fetch autocomplete suggestions
     const fetchSuggestions = async (searchQuery: string) => {
@@ -26,13 +27,12 @@ function LocationInput({onSelect}:LocationInputProps) {
     const handleCitySelect = (city: string) => {
         setSelectedCity(city);
         setQuery(city);
-        onSelect(city); 
-        setSuggestions([]); 
+        onSelect(city);
+        setSuggestions([]);
     };
 
-
     return (
-        <div className="relative">
+        <div className="relative w-full max-w-md mx-auto">
             <input
                 type="text"
                 placeholder="Search for a city"
