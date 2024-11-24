@@ -9,7 +9,7 @@ import Country from "./components/Country";
 function App() {
   
   
-  const [cityName, setCityName] = useState<string | null>(localStorage.getItem("cityName"));
+  const [cityName, setCityName] = useState<string | null>(localStorage.getItem("cityName") || "Sofia");
   const [fetchCityName, setFetchCityName] = useState<string | null>(cityName);
   const { isFetching, data } = useWeatherOverViewQuery(fetchCityName);
 
