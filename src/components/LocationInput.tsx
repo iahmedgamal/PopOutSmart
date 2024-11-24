@@ -18,7 +18,7 @@ function LocationInput({ onSelect }: LocationInputProps) {
 
         const API_KEY = "1a8927de54f779e3daeb1932452a3799";
         const response = await fetch(
-            `http://api.openweathermap.org/geo/1.0/direct?q=${searchQuery}&limit=5&appid=${API_KEY}`
+            `https://api.openweathermap.org/geo/1.0/direct?q=${searchQuery}&limit=5&appid=${API_KEY}`
         );
         const results = await response.json();
         setSuggestions(results);
