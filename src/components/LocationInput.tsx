@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 interface LocationInputProps {
-    onSelect: (value: string) => void;
+    onSelect: (lat: number, lon: number) => void;
 }
 
 function LocationInput({ onSelect }: LocationInputProps) {
@@ -24,10 +24,11 @@ function LocationInput({ onSelect }: LocationInputProps) {
         setSuggestions(results);
     };
 
-    const handleCitySelect = (city: string) => {
-        setSelectedCity(city);
-        setQuery(city);
-        onSelect(city);
+    const handleCitySelect = (city: any) => {
+        const localName = city.local_names?.state || city.local_names?.en || city.name;
+        setSelectedCity(localName);
+        setQuery(localName);
+        onSelect(city.lat, city.lon); // Pass latitude and longitude to onSelect
         setSuggestions([]);
     };
 
@@ -50,11 +51,7 @@ function LocationInput({ onSelect }: LocationInputProps) {
                         <div
                             key={index}
                             className="p-2 text-blue-300 hover:bg-gray-200 cursor-pointer"
-                            onClick={() =>
-                                handleCitySelect(
-                                    `${suggestion.name}, ${suggestion.country}`
-                                )
-                            }
+                            onClick={() => handleCitySelect(suggestion)}
                         >
                             {suggestion.name}, {suggestion.country}
                         </div>

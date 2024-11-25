@@ -1,9 +1,9 @@
 import ky from "ky";
 
-export async function getWeatherOverView( cityName: string) {
+export async function getWeatherOverView(lat: number, lon: number) {
   const res = await ky
     .get(
-      `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=1a8927de54f779e3daeb1932452a3799`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=1a8927de54f779e3daeb1932452a3799`
     )
     .json<WeatherInfo>();
   return res;
