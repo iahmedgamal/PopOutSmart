@@ -51,4 +51,5 @@ export interface WeatherInfo {
   id: number;
   name: string;
   cod: number;
+  rain : any
 }

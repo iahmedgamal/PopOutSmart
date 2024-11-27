@@ -1,10 +1,14 @@
+// App.tsx
+
 import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { useWeatherOverViewQuery } from "./query";
 import "./App.css";
 import Degrees from "./components/Degrees";
 import WeatherClothingAdvisor from "./components/ClothingRecommendations";
 import LocationInput from "./components/LocationInput";
 import Country from "./components/Country";
+import Model from "./recommend/weather-model";  // Make sure to import your Model component
 
 function App() {
   const defaultLocation = { lat: 30.0444, lon: 31.2357 }; // Default to Cairo's coordinates
@@ -48,24 +52,39 @@ function App() {
   }, [location]);
 
   return (
-    <div className="p-1 m-1">
-      <button 
-        className="absolute top-0 left-0 m-4 p-1 bg-red-500 text-white rounded text-xs" 
-        onClick={handleReset}
-      >
-        Reset
-      </button>
-      <LocationInput onSelect={handleLocationSelect} />
-      {data ? (
-        <>
-          <Country data={data} />
-          <Degrees data={data} />
-          <WeatherClothingAdvisor data={data} />
-        </>
-      ) : (
-        <p>Loading...</p>
-      )}
-    </div>
+      <div className="p-1 m-1">
+        <nav>
+          <ul className="flex space-x-4 mb-4">
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/model">Model</Link>
+            </li>
+          </ul>
+        </nav>
+        <button
+          className="absolute top-0 left-0 m-4 p-1 bg-red-500 text-white rounded text-xs"
+          onClick={handleReset}
+        >
+          Reset
+        </button>
+        <LocationInput onSelect={handleLocationSelect} />
+        <Routes>
+          <Route path="/" element={
+            data ? (
+              <>
+                <Country data={data} />
+                <Degrees data={data} />
+                <WeatherClothingAdvisor data={data} />
+              </>
+            ) : (
+              <p>Loading...</p>
+            )
+          } />
+          <Route path="/model" element={<Model data={data} />} />
+        </Routes>
+      </div>
   );
 }
 
