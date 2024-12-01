@@ -8,7 +8,7 @@ import Degrees from "./components/Degrees";
 import WeatherClothingAdvisor from "./components/ClothingRecommendations";
 import LocationInput from "./components/LocationInput";
 import Country from "./components/Country";
-import Model from "./recommend/weather-model";  // Make sure to import your Model component
+import Model from "./recommend/weather-model";  
 
 function App() {
   const defaultLocation = { lat: 30.0444, lon: 31.2357 }; // Default to Cairo's coordinates
@@ -21,6 +21,7 @@ function App() {
   }, []);
   const [fetchLocation, setFetchLocation] = useState<{ lat: number; lon: number } | null>(location);
   const { data } = useWeatherOverViewQuery(fetchLocation?.lat, fetchLocation?.lon);
+  console.log(data)
 
   useEffect(() => {
     const savedLocation = getSavedLocation();
@@ -29,12 +30,29 @@ function App() {
     }
   }, []);
 
+
+  useEffect(() => {
+    if (data) {
+      fetch('https://pop-out-smart-server.vercel.app/save-weather', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then(response => response.json())
+        .then(data => console.log('Weather data saved:', data))
+        .catch(error => console.error('Error saving weather data:', error));
+    }
+  }, [data]); 
+
   const getSavedLocation = (): { lat: number; lon: number } | null => {
     const saved = localStorage.getItem("location");
     return saved ? JSON.parse(saved) : null;
   };
 
   const handleLocationSelect = (lat: number, lon: number) => {
+    console.log("Selected location", lat, lon);
     const selectedLocation = { lat, lon };
     localStorage.setItem("location", JSON.stringify(selectedLocation));
     setLocation(selectedLocation || defaultLocation);
