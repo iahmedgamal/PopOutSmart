@@ -7,15 +7,19 @@ import { WeatherInfo } from "../query/api";
 const prepareData = (data: any[]) => {
   const temps = data.map((d: WeatherInfo) => d.main.temp);
   const feelsLikes = data.map((d: WeatherInfo) => d.main.feels_like);
+  const wind = data.map((d: WeatherInfo) => d.wind.speed);
   
   const minTemp = Math.min(...temps);
   const maxTemp = Math.max(...temps);
   const minFeelsLike = Math.min(...feelsLikes);
   const maxFeelsLike = Math.max(...feelsLikes);
+  const minWind = Math.min(...wind);
+  const maxWind = Math.max(...wind);
 
   const normalizedInputs = data.map((d: WeatherInfo) => [
     (d.main.temp - minTemp) / (maxTemp - minTemp),
-    (d.main.feels_like - minFeelsLike) / (maxFeelsLike - minFeelsLike)
+    (d.main.feels_like - minFeelsLike) / (maxFeelsLike - minFeelsLike),
+    (d.wind.speed - minWind) / (maxWind - minWind)
   ]);
 
   const normalizedLabels = data.map((d: WeatherInfo) => {
@@ -30,7 +34,9 @@ const prepareData = (data: any[]) => {
     minTemp,
     maxTemp,
     minFeelsLike,
-    maxFeelsLike
+    maxFeelsLike,
+    minWind,
+    maxWind
   }
 };
 
@@ -40,7 +46,9 @@ const {
   minTemp, 
   maxTemp, 
   minFeelsLike, 
-  maxFeelsLike 
+  maxFeelsLike ,
+  minWind,
+  maxWind
 } = prepareData(trainingData);
 
 const inputTensor = tf.tensor2d(inputs);
@@ -70,19 +78,21 @@ const Model = ({ data }: ModelProps) => {
     const newModel = tf.sequential();
     
     newModel.add(tf.layers.dense({
-      units: 16,
+      units: 64,
       activation: 'relu',
-      inputShape: [2]
+      inputShape: [3],
+      kernelRegularizer: tf.regularizers.l2({ l2: 0.001 }) 
+
     }));
     
     newModel.add(tf.layers.dense({
-      units: 32,
+      units: 64,
       activation: 'relu'
     }));
-    newModel.add(tf.layers.dropout({ rate: 0.2 }));
+    newModel.add(tf.layers.dropout({ rate: 0.3 }));
     
     newModel.add(tf.layers.dense({
-      units: 16,
+      units: 64,
       activation: 'relu'
     }));
     
@@ -92,7 +102,7 @@ const Model = ({ data }: ModelProps) => {
     }));
 
     newModel.compile({
-      optimizer: tf.train.adam(0.001),
+      optimizer: tf.train.adam(0.0005),
       loss: 'categoricalCrossentropy',
       metrics: ['accuracy']
     });
@@ -129,12 +139,12 @@ const Model = ({ data }: ModelProps) => {
       const newModel = createModel();
       
       const history = await newModel.fit(inputTensor, labelTensor, {
-        epochs: 300,
+        epochs: 400,
         batchSize: 4,
         validationSplit: 0.2,
         callbacks: {
           onEpochEnd: async (epoch, logs) => {
-            const progress = ((epoch + 1) / 300) * 100;
+            const progress = ((epoch + 1) / 400) * 100;
             setTrainingProgress(progress);
             console.log(`Epoch ${epoch}: loss = ${logs.loss}, accuracy = ${logs.acc}`);
           }
@@ -155,11 +165,13 @@ const Model = ({ data }: ModelProps) => {
 
     try {
       const { temp, feels_like } = data.main;
+      const { speed: windSpeed } = data.wind;
 
       const normalizedTemp = (temp - minTemp) / (maxTemp - minTemp);
       const normalizedFeelsLike = (feels_like - minFeelsLike) / (maxFeelsLike - minFeelsLike);
+      const normalizedWind = (windSpeed - minWind) / (maxWind - minWind);
 
-      const input = tf.tensor2d([[normalizedTemp, normalizedFeelsLike]]);
+      const input = tf.tensor2d([[normalizedTemp, normalizedFeelsLike,normalizedWind]]);
       const output = model.predict(input) as tf.Tensor;
       
       const predictionArray = (output.arraySync() as number[][])[0];
