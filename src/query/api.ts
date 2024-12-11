@@ -10,6 +10,9 @@ export async function getWeatherOverView(lat: number, lon: number) {
 }
 
 export interface WeatherInfo {
+  _id?: {
+    $oid: string;
+  };
   coord: {
     lon: number;
     lat: number;
@@ -51,5 +54,5 @@ export interface WeatherInfo {
   id: number;
   name: string;
   cod: number;
-  rain : any
+  top: number;
 }

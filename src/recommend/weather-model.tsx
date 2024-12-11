@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from "react";
 import * as tf from '@tensorflow/tfjs';
-import trainingData from './data';
+import trainingData from './weatherDB.weatherData'
 import { WeatherInfo } from "../query/api";
 
 // Enhanced data preparation
-const prepareData = (data) => {
-  const temps = data.map(d => d.temp);
-  const winds = data.map(d => d.wind);
+const prepareData = (data: any[]) => {
+  const temps = data.map((d: WeatherInfo) => d.main.temp);
+  const feelsLikes = data.map((d: WeatherInfo) => d.main.feels_like);
   
   const minTemp = Math.min(...temps);
   const maxTemp = Math.max(...temps);
-  const minWind = Math.min(...winds);
-  const maxWind = Math.max(...winds);
+  const minFeelsLike = Math.min(...feelsLikes);
+  const maxFeelsLike = Math.max(...feelsLikes);
 
-  const normalizedInputs = data.map(d => [
-    (d.temp - minTemp) / (maxTemp - minTemp),
-    (d.wind - minWind) / (maxWind - minWind)
+  const normalizedInputs = data.map((d: WeatherInfo) => [
+    (d.main.temp - minTemp) / (maxTemp - minTemp),
+    (d.main.feels_like - minFeelsLike) / (maxFeelsLike - minFeelsLike)
   ]);
 
-  const normalizedLabels = data.map(d => {
+  const normalizedLabels = data.map((d: WeatherInfo) => {
     const label = new Array(6).fill(0);
     label[d.top] = 1;
     return label;
@@ -29,9 +29,9 @@ const prepareData = (data) => {
     labels: normalizedLabels,
     minTemp,
     maxTemp,
-    minWind,
-    maxWind
-  };
+    minFeelsLike,
+    maxFeelsLike
+  }
 };
 
 const { 
@@ -39,8 +39,8 @@ const {
   labels, 
   minTemp, 
   maxTemp, 
-  minWind, 
-  maxWind 
+  minFeelsLike, 
+  maxFeelsLike 
 } = prepareData(trainingData);
 
 const inputTensor = tf.tensor2d(inputs);
@@ -154,13 +154,12 @@ const Model = ({ data }: ModelProps) => {
     if (!model || !data) return;
 
     try {
-      const { temp } = data.main;
-      const wind = data.wind.speed;
+      const { temp, feels_like } = data.main;
 
       const normalizedTemp = (temp - minTemp) / (maxTemp - minTemp);
-      const normalizedWind = (wind - minWind) / (maxWind - minWind);
+      const normalizedFeelsLike = (feels_like - minFeelsLike) / (maxFeelsLike - minFeelsLike);
 
-      const input = tf.tensor2d([[normalizedTemp, normalizedWind]]);
+      const input = tf.tensor2d([[normalizedTemp, normalizedFeelsLike]]);
       const output = model.predict(input) as tf.Tensor;
       
       const predictionArray = (output.arraySync() as number[][])[0];
@@ -239,8 +238,10 @@ const Model = ({ data }: ModelProps) => {
           Load Saved Model
         </button>
       </div>
+    
     </div>
   );
 };
 
 export default Model;
+
