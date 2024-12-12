@@ -68,10 +68,10 @@ const Model = ({ data }: ModelProps) => {
   const topLabels = [
     "T-shirt", 
     "Sweater", 
-    "Warm jacket", 
-    "T-shirt with light jacket", 
-    "Sweater with light jacket", 
-    "Sweater with warm jacket"
+    "T-Shirt + Light Jacket", 
+    "Long-Sleeve Shirt + Hoodie", 
+    "Sweater + Heavy Coat", 
+    "Thermal Top + Sweater + Heavy Coat"
   ];
 
   const createModel = () => {
@@ -139,7 +139,7 @@ const Model = ({ data }: ModelProps) => {
       const newModel = createModel();
       
       const history = await newModel.fit(inputTensor, labelTensor, {
-        epochs: 400,
+        epochs: 500,
         batchSize: 4,
         validationSplit: 0.2,
         callbacks: {
